@@ -85,7 +85,7 @@ def all_users_route():
 
 
 @app.route("/delete_user", methods=["POST"])
-def all_users_route():
+def delete_user():
     candidate_id = request.form.get("candidate_id", "")
     result = delete_candidate(candidate_id)
     if result:
