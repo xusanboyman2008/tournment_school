@@ -113,7 +113,7 @@ def all_users():
 
 
 def init():
-    # Base.metadata.drop_all(engine)
+    Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)   # <- creates all missing tables
 
 if __name__ == "__main__":
