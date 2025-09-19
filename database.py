@@ -108,7 +108,8 @@ def all_users():
             for i in r:
                 a[i.id]={"name": i.name, "answers":i.answers,"surname": i.surname,"score":i.score,
                         "grade": i.grade, "subject": i.subject_name,'new_user':True}
-        return a
+            return a
+        return False
 
 
 def init():
