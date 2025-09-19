@@ -60,7 +60,8 @@ def get_questions_and_answers(subject_name, grade):
             subject_name=subject_name,
             grade=grade
         ).first()
-        return r if r else False
+        if r:
+            return {"id":r.id,"questions":r.questions,"grade":r.grade}
 
 
 def get_or_create_candidates(name, surname, grade, subject_name):
@@ -127,7 +128,7 @@ def all_users(subject: str):
 
 
 def init():
-    Base.metadata.drop_all(engine)
+    # Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)   # <- creates all missing tables
 
 if __name__ == "__main__":

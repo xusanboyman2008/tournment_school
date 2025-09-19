@@ -74,11 +74,11 @@ def get_questions_and_answers_route():
 @app.route("/create_questions", methods=["POST"])
 def create_questions_and_answers_route():
     subject_name = request.args.get('subject_name')
-    grade = request.args.get('grade')
-    questions = request.args.get('questions')
+    grade = request.json.get('grade')
+    questions = request.json.get('questions')
     if not subject_name or not grade or not questions:
-        return jsonify({"success": False, 'message': 'subject and grade are required'})
-    result = create_quests_and_answers(subject_name,grade,questions)
+        return jsonify({"success": False, 'message': 'subject_name and grade and questions are required'})
+    result = create_quests_and_answers(subject_name=subject_name,grade=grade,questions=questions)
     if result:
         return jsonify({"success": True})
 
