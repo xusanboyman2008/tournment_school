@@ -2,8 +2,7 @@ from flask import Flask, request, jsonify
 import secrets
 from flask_cors import CORS
 
-from database import get_or_create_candidates, update_candidate, get_questions_and_answers, init, all_users
-from tournament.database import delete_candidate
+from database import get_or_create_candidates, update_candidate, get_questions_and_answers, init, all_users, delete_candidate
 
 app = Flask(__name__)
 app.secret_key = secrets.token_urlsafe(32)

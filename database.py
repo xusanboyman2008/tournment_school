@@ -109,6 +109,8 @@ def all_users():
                 a[i.id]={"name": i.name, "answers":i.answers,"surname": i.surname,"score":i.score,
                         "grade": i.grade, "subject": i.subject_name,'new_user':True}
         return a
+
+
 def init():
     # Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)   # <- creates all missing tables
