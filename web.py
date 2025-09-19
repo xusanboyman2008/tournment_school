@@ -33,39 +33,11 @@ def create_user():
     return jsonify({"success": True, "user": user})
 
 
-
-@app.route("/get_questions_and_answers", methods=["GET"])
-def get_questions_and_answers_route():
-    # subject_name = request.args.get("subject_name", "")
-    # grade = request.args.get("grade", "")
-    subject_name = request.json.get("subject")
-    grade = request.json.get("grade")
-
-    if not subject_name or not grade:
-        return jsonify({"success": False, 'message': 'subject_name and grade are required'})
-
-    result = get_questions_and_answers(subject_name, grade)
-    if not result:
-        return jsonify({"success": False, "message": "No questions found"})
-
-    return jsonify({
-        "success": True,
-        "questions": {
-            "id": result.id,
-            "subject_name": result.subject_name,
-            "grade": result.grade,
-            "questions": result.questions,
-            "answers": result.answers,
-            "created_at": str(result.created_at)
-        }
-    })
-
-
 @app.route("/update_user", methods=["POST"])
 def update_user_web():
-    id = request.json.get("id")
-    score = request.json.get("score")
-    answers = request.json.get("answers",None)
+    id = request.args.get("id")
+    score = request.args.get("score")
+    answers = request.args.get("answers",None)
 
     if not id or not score:
         return jsonify({"success": False, 'message': 'id and score are required'})
@@ -88,7 +60,7 @@ def all_users_route():
 
 @app.route("/delete_user", methods=["POST"])
 def delete_user():
-    candidate_id = request.form.get("candidate_id", "")
+    candidate_id = request.args.get("candidate_id")
     result = delete_candidate(candidate_id)
     if result:
         return jsonify({
