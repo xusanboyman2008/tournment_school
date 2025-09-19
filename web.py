@@ -6,6 +6,9 @@ from database import get_or_create_candidates, update_candidate, get_questions_a
 
 app = Flask(__name__)
 app.secret_key = secrets.token_urlsafe(32)
+(CORS(app, resources={r"/*": {"origins": "*"}}))
+
+
 
 @app.route('/')
 def index():
