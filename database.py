@@ -44,7 +44,6 @@ def create_quests_and_answers(subject_name, questions, grade):
         ).first()
         if r:
             return r
-
         new_obj = Questions_and_answers(
             subject_name=subject_name,
             questions=questions,
@@ -99,17 +98,32 @@ def update_candidate(id, score,answers=None):
             return True
         return False
 
-
-def all_users():
+def all_users(subject: str):
     with SessionLocal() as session:
-        r = session.query(Candidates).all()
+        # Query all candidates for this subject, ordered by score descending
+        r = (
+            session.query(Candidates)
+            .filter(Candidates.subject_name == subject)
+            .order_by(Candidates.score.desc())
+            .all()
+        )
+
         if r:
-            a = {}
+            result = []
             for i in r:
-                a[i.id]={"name": i.name, "answers":i.answers,"surname": i.surname,"score":i.score,
-                        "grade": i.grade, "subject": i.subject_name,'new_user':True}
-            return a
-        return False
+                result.append({
+                    "id": i.id,
+                    "name": i.name,
+                    "surname": i.surname,
+                    "answers": i.answers,
+                    "score": i.score,
+                    "grade": i.grade,
+                    "subject": i.subject_name,
+                    "new_user": True
+                })
+            return result
+        return []
+
 
 
 def init():
@@ -118,3 +132,7 @@ def init():
 
 if __name__ == "__main__":
     init()
+    for i in range(10):
+        for a in range(3):
+            get_or_create_candidates(name=i+a,surname=a,grade=i,subject_name=i)
+            update_candidate(i, i+a)

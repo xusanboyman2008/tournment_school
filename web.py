@@ -2,7 +2,8 @@ from flask import Flask, request, jsonify
 import secrets
 from flask_cors import CORS
 
-from database import get_or_create_candidates, update_candidate, get_questions_and_answers, init, all_users, delete_candidate
+from database import get_or_create_candidates, update_candidate, get_questions_and_answers, init, all_users, \
+    delete_candidate, create_quests_and_answers
 
 app = Flask(__name__)
 app.secret_key = secrets.token_urlsafe(32)
@@ -50,12 +51,36 @@ def update_user_web():
 
 @app.route("/all_users", methods=["GET"])
 def all_users_route():
-    users = all_users()
+    subject_name = request.args.get('subject_name')
+    users = all_users(subject_name)
     if not users:
         return jsonify({"success": False, "message": "No users found"})
     return jsonify({
         "success": True,'message': users,
     })
+
+
+
+@app.route("/get_questions", methods=["GET"])
+def get_questions_and_answers_route():
+    subject_name = request.args.get('subject_name')
+    grade = request.args.get('grade')
+    if not subject_name or not grade:
+        return jsonify({"success": False, 'message': 'subject and grade are required'})
+    subject_questions = get_questions_and_answers(subject_name,grade)
+    return jsonify({"message": subject_questions, "success": True})
+
+
+@app.route("/create_questions", methods=["POST"])
+def create_questions_and_answers_route():
+    subject_name = request.args.get('subject_name')
+    grade = request.args.get('grade')
+    questions = request.args.get('questions')
+    if not subject_name or not grade or not questions:
+        return jsonify({"success": False, 'message': 'subject and grade are required'})
+    result = create_quests_and_answers(subject_name,grade,questions)
+    if result:
+        return jsonify({"success": True})
 
 
 @app.route("/delete_user", methods=["POST"])
