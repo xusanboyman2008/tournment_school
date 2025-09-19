@@ -20,10 +20,10 @@ def index():
 
 @app.route("/create_user", methods=["POST"])
 def create_user():
-    name = request.json.get('name','')
-    surname = request.json.get("surname", "")
-    subject = request.json.get("subject", "")
-    grade = request.json.get("grade", "")
+    name = request.args.get('name','')
+    surname = request.args.get("surname", "")
+    subject = request.args.get("subject", "")
+    grade = request.args.get("grade", "")
 
     if not name or not surname or not subject or not grade:
         return jsonify({"success": False, "message": "name, surname, subject, grade is required"})
