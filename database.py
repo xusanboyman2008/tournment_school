@@ -76,7 +76,7 @@ def get_or_create_candidates(name, surname, grade, subject_name):
         session.add(new_candidate)
         session.commit()
         session.refresh(new_candidate)  # ensures id is available
-        return {"id": new_candidate.id, "name": new_candidate.name, "surname": new_candidate.surname,"answers":r.answers,
+        return {"id": new_candidate.id, "name": new_candidate.name, "surname": new_candidate.surname,
                 "grade": new_candidate.grade, "subject": new_candidate.subject_name,'new_user':True}
 
 def delete_candidate(candidate_id):
