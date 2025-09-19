@@ -36,8 +36,10 @@ def create_user():
 
 @app.route("/get_questions_and_answers", methods=["GET"])
 def get_questions_and_answers_route():
-    subject_name = request.args.get("subject_name", "")
-    grade = request.args.get("grade", "")
+    # subject_name = request.args.get("subject_name", "")
+    # grade = request.args.get("grade", "")
+    subject = request.json.get("subject")
+    grade = request.json.get("grade")
 
     if not subject_name or not grade:
         return jsonify({"success": False, 'message': 'subject_name and grade are required'})
