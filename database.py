@@ -79,14 +79,22 @@ def get_or_create_candidates(name, surname, grade, subject_name):
         return {"id": new_candidate.id, "name": new_candidate.name, "surname": new_candidate.surname,
                 "grade": new_candidate.grade, "subject": new_candidate.subject_name,'new_user':True}
 
+def delete_candidate(candidate_id):
+    with SessionLocal() as session:
+        r = session.query(Candidates).filter_by(id=candidate_id).first()
+        if r:
+            session.delete(r)
+            session.commit()
+            return True
+        return False
 
-
-def update_candidate(id, score,answers):
+def update_candidate(id, score,answers=None):
     with SessionLocal() as session:
         r = session.query(Candidates).filter_by(id=id).first()
         if r:
             r.score = score
-            r.answers = answers
+            if answers:
+                r.answers = answers
             session.commit()
             return True
         return False
@@ -98,10 +106,11 @@ def all_users():
         if r:
             a = {}
             for i in r:
-                a[i.id]={"name": i.name, "surname": i.surname,"score":i.score,
+                a[i.id]={"name": i.name, "answers":i.answers,"surname": i.surname,"score":i.score,
                         "grade": i.grade, "subject": i.subject_name,'new_user':True}
         return a
 def init():
+    # Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)   # <- creates all missing tables
 
 if __name__ == "__main__":

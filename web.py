@@ -3,6 +3,7 @@ import secrets
 from flask_cors import CORS
 
 from database import get_or_create_candidates, update_candidate, get_questions_and_answers, init, all_users
+from tournament.database import delete_candidate
 
 app = Flask(__name__)
 app.secret_key = secrets.token_urlsafe(32)
@@ -63,7 +64,7 @@ def get_questions_and_answers_route():
 def update_user_web():
     id = request.form.get("id", "")
     score = request.form.get("score", "")
-    answers = request.form.get("answers", "")
+    answers = request.form.get("answers",None)
 
     if not id or not score:
         return jsonify({"success": False, 'message': 'id and score are required'})
@@ -76,9 +77,24 @@ def update_user_web():
 
 @app.route("/all_users", methods=["GET"])
 def all_users_route():
+    users = all_users()
+    if not users:
+        return jsonify({"success": False, "message": "No users found"})
     return jsonify({
-        "success": True,'message': all_users()
+        "success": True,'message': users,
     })
+
+
+@app.route("/delete_user", methods=["POST"])
+def all_users_route():
+    candidate_id = request.form.get("candidate_id", "")
+    result = delete_candidate(candidate_id)
+    if result:
+        return jsonify({
+            "success": True,'message': result
+        })
+    return jsonify({"success": False})
+
 
 if __name__ == "__main__":
     init()
