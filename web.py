@@ -38,7 +38,7 @@ def create_user():
 def get_questions_and_answers_route():
     # subject_name = request.args.get("subject_name", "")
     # grade = request.args.get("grade", "")
-    subject = request.json.get("subject")
+    subject_name = request.json.get("subject")
     grade = request.json.get("grade")
 
     if not subject_name or not grade:
