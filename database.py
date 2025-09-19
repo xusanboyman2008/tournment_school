@@ -33,7 +33,7 @@ class Candidates(Base):
     grade = Column(Integer, nullable=False)
     answers = Column(String, nullable=True)
     subject_name = Column(String, nullable=False)
-    score = Column(Integer, nullable=False, default=0)
+    score = Column(String, nullable=False, default=0)
 
 
 def create_quests_and_answers(subject_name, questions, grade):
@@ -70,13 +70,13 @@ def get_or_create_candidates(name, surname, grade, subject_name):
             name=name, surname=surname, grade=grade, subject_name=subject_name
         ).first()
         if r:
-            return {"id": r.id, "name": r.name, "surname": r.surname, "grade": r.grade, "subject": r.subject_name,'new_user':False}
+            return {"id": r.id,"answers":r.answers, "name": r.name, "surname": r.surname, "grade": r.grade, "subject": r.subject_name,'new_user':False}
 
         new_candidate = Candidates(name=name, surname=surname, grade=grade, subject_name=subject_name)
         session.add(new_candidate)
         session.commit()
         session.refresh(new_candidate)  # ensures id is available
-        return {"id": new_candidate.id, "name": new_candidate.name, "surname": new_candidate.surname,
+        return {"id": new_candidate.id, "name": new_candidate.name, "surname": new_candidate.surname,"answers":r.answers,
                 "grade": new_candidate.grade, "subject": new_candidate.subject_name,'new_user':True}
 
 def delete_candidate(candidate_id):
