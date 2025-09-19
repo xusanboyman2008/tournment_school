@@ -31,7 +31,7 @@ class Candidates(Base):
     name = Column(String, nullable=False)
     surname = Column(String, nullable=False)
     grade = Column(Integer, nullable=False)
-    answers = Column(String, nullable=True)
+    answers = Column(String, nullable=True,default="")
     subject_name = Column(String, nullable=False)
     score = Column(String, nullable=False, default=0)
 
@@ -70,7 +70,7 @@ def get_or_create_candidates(name, surname, grade, subject_name):
             name=name, surname=surname, grade=grade, subject_name=subject_name
         ).first()
         if r:
-            return {"id": r.id,"answers":r.answers, "name": r.name, "surname": r.surname, "grade": r.grade, "subject": r.subject_name,'new_user':False}
+            return {"id": r.id, "name": r.name, "surname": r.surname, "grade": r.grade, "subject": r.subject_name,'new_user':False}
 
         new_candidate = Candidates(name=name, surname=surname, grade=grade, subject_name=subject_name)
         session.add(new_candidate)
