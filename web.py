@@ -20,10 +20,10 @@ def index():
 
 @app.route("/create_user", methods=["POST"])
 def create_user():
-    name = request.form.get('name','')
-    surname = request.form.get("surname", "")
-    subject = request.form.get("subject", "")
-    grade = request.form.get("grade", "")
+    name = request.json.get('name','')
+    surname = request.json.get("surname", "")
+    subject = request.json.get("subject", "")
+    grade = request.json.get("grade", "")
 
     if not name or not surname or not subject or not grade:
         return jsonify({"success": False, "message": "name, surname, subject, grade is required"})
@@ -63,9 +63,9 @@ def get_questions_and_answers_route():
 
 @app.route("/update_user", methods=["POST"])
 def update_user_web():
-    id = request.form.get("id", "")
-    score = request.form.get("score", "")
-    answers = request.form.get("answers",None)
+    id = request.json.get("id")
+    score = request.json.get("score")
+    answers = request.json.get("answers",None)
 
     if not id or not score:
         return jsonify({"success": False, 'message': 'id and score are required'})
